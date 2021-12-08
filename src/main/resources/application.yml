@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Lrj20010817-
+    url: jdbc:mysql://localhost:3306/chat
+
+sa-token:
+  token-name: chattoken
+  timeout: 2592000
+  activity-timeout: -1
+  is-concurrent: false
+  is-share: false
+  token-style: uuid
+  is-log: false
