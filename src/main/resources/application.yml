@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Lrj20010817-
-    url: jdbc:mysql://localhost:3306/chat
+    url: jdbc:mysql://106.15.7.60:3306/chat
 
 sa-token:
   token-name: chattoken

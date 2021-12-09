@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@CrossOrigin
 public class UserController {
     @Resource
     private UserService userService;
@@ -31,9 +32,9 @@ public class UserController {
         return ResponseEntity.status(200).body("注册成功");
     }
 
-    // 加好友
-    @PostMapping("/friend")
-    public ResponseEntity<String> addFriend(@RequestBody Friend friend) {
-        //TODO:思考没鉴权和鉴权失败的区别？
-    }
+//    // 加好友
+//    @PostMapping("/friend")
+//    public ResponseEntity<String> addFriend(@RequestBody Friend friend) {
+//        //TODO:思考没鉴权和鉴权失败的区别？
+//    }
 }
