@@ -4,25 +4,17 @@ package cn.edu.tongji.webchat.webchatbackend.dto;/*
     @Description：
 */
 
-import java.sql.Timestamp;
-
-public class FriendDTO {
+public class FriendListDTO {
     private Long friendId;
     private String friendName;
-    private String friendEmail;
     private String friendMotto;
     private String friendAvatarLink;
-    private Long friendLevel;
-    private Timestamp friendCreateTime;
 
-    public FriendDTO(Long friendId, String friendName, String friendEmail, String friendMotto, String friendAvatarLink, Long friendLevel, Timestamp friendCreateTime) {
+    public FriendListDTO(Long friendId, String friendName, String friendMotto, String friendAvatarLink) {
         this.friendId = friendId;
         this.friendName = friendName;
-        this.friendEmail = friendEmail;
         this.friendMotto = friendMotto;
         this.friendAvatarLink = friendAvatarLink;
-        this.friendLevel = friendLevel;
-        this.friendCreateTime = friendCreateTime;
     }
 
     public Long getFriendId() {
@@ -41,14 +33,6 @@ public class FriendDTO {
         this.friendName = friendName;
     }
 
-    public String getFriendEmail() {
-        return friendEmail;
-    }
-
-    public void setFriendEmail(String friendEmail) {
-        this.friendEmail = friendEmail;
-    }
-
     public String getFriendMotto() {
         return friendMotto;
     }
@@ -65,32 +49,13 @@ public class FriendDTO {
         this.friendAvatarLink = friendAvatarLink;
     }
 
-    public Long getFriendLevel() {
-        return friendLevel;
-    }
-
-    public void setFriendLevel(Long friendLevel) {
-        this.friendLevel = friendLevel;
-    }
-
-    public Timestamp getFriendCreateTime() {
-        return friendCreateTime;
-    }
-
-    public void setFriendCreateTime(Timestamp friendCreateTime) {
-        this.friendCreateTime = friendCreateTime;
-    }
-
     @Override
     public String toString() {
         return "{" +
                 "friendId=" + friendId +
                 ", friendName='" + friendName + '\'' +
-                ", friendEmail='" + friendEmail + '\'' +
                 ", friendMotto='" + friendMotto + '\'' +
                 ", friendAvatarLink='" + friendAvatarLink + '\'' +
-                ", friendLevel=" + friendLevel +
-                ", friendCreateTime=" + friendCreateTime +
                 '}';
     }
 }

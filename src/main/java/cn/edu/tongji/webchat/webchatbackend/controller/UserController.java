@@ -2,6 +2,7 @@ package cn.edu.tongji.webchat.webchatbackend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.edu.tongji.webchat.webchatbackend.dto.FriendDTO;
+import cn.edu.tongji.webchat.webchatbackend.dto.FriendListDTO;
 import cn.edu.tongji.webchat.webchatbackend.dto.RegisterDTO;
 import cn.edu.tongji.webchat.webchatbackend.dto.UserDTO;
 import cn.edu.tongji.webchat.webchatbackend.model.Friend;
@@ -91,14 +92,14 @@ public class UserController {
     // 找好友列表，也需要鉴权 - 需要返回好友列表，里面每个项目都需要一些信息，通过测试！！！
     @ApiOperation("查找好友列表")
     @GetMapping("/friend_list/{user_id}")
-    public ResponseEntity<List<FriendDTO>> findFriendList(@PathVariable("user_id") Long userId) {
+    public ResponseEntity<List<FriendListDTO>> findFriendList(@PathVariable("user_id") Long userId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
         List<User> friendListOrigin = userService.findFriendList(userId);
-        List<FriendDTO> friendList = new ArrayList<>();
+        List<FriendListDTO> friendList = new ArrayList<>();
         for (User u : friendListOrigin) {
-            FriendDTO friendDTO = new FriendDTO(u.getUserId(), u.getUserName(), u.getUserMotto(), u.getUserAvatarLink());
-            friendList.add(friendDTO);
+            FriendListDTO friendListDTO = new FriendListDTO(u.getUserId(), u.getUserName(), u.getUserMotto(), u.getUserAvatarLink());
+            friendList.add(friendListDTO);
         }
         return ResponseEntity.status(200).body(friendList);
     }
