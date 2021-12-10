@@ -4,11 +4,13 @@ import cn.edu.tongji.webchat.webchatbackend.model.Friend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Long> {
-    Friend deleteFriendByFriendIdAndUserId(Long friendId, Long userId);
+    @Transactional
+    void deleteFriendByFriendIdAndUserId(Long friendId, Long userId);
 
     Friend findFriendByFriendIdAndUserId(Long friendId, Long userId);
 

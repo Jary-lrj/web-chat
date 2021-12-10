@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: Lrj20010817-
+    username:
+    password: 
     url: jdbc:mysql://106.15.7.60:3306/chat
 
 sa-token:
@@ -13,3 +13,10 @@ sa-token:
   is-share: false
   token-style: uuid
   is-log: false
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+    swagger:
+      v2:
+        host:
