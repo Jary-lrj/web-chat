@@ -62,9 +62,9 @@ public class UserService {
             return null;
     }
 
-    public List<Friend> findFriendList(Long userId) { // 返回空
-        if (friendRepository.findFriendsByUserId(userId) != null)
-            return friendRepository.findFriendsByUserId(userId);
+    public List<User> findFriendList(Long userId) { // 返回空
+        if (userRepository.findFriendList(userId) != null)
+            return userRepository.findFriendList(userId);
         else
             return null;
     }

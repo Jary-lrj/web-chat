@@ -1,6 +1,9 @@
 package cn.edu.tongji.webchat.webchatbackend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.edu.tongji.webchat.webchatbackend.dto.FriendDTO;
+import cn.edu.tongji.webchat.webchatbackend.dto.RegisterDTO;
+import cn.edu.tongji.webchat.webchatbackend.dto.UserDTO;
 import cn.edu.tongji.webchat.webchatbackend.model.Friend;
 import cn.edu.tongji.webchat.webchatbackend.model.User;
 import cn.edu.tongji.webchat.webchatbackend.service.UserService;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "用户操作")
@@ -23,7 +27,7 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    // 登录
+    // 登录，这应该不太需要，往里面存个token就行了
     @ApiOperation("用户登录")
     @GetMapping("/login")
     public ResponseEntity<String> userLogin(@RequestParam("user_id") Long userId, @RequestParam("user_pwd") String userPassword) {
@@ -36,9 +40,10 @@ public class UserController {
     // 注册 - 返回注册的用户名、密码、账号
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public ResponseEntity<String> userRegister(@RequestBody User user) {
+    public ResponseEntity<RegisterDTO> userRegister(@RequestBody User user) {
         userService.register(user);
-        return ResponseEntity.status(200).body("注册成功");
+        RegisterDTO userAccount = new RegisterDTO(user.getUserId(), user.getUserName(), user.getUserPassword());
+        return ResponseEntity.status(200).body(userAccount);
     }
 
     // 添加好友，需要鉴权
@@ -47,6 +52,8 @@ public class UserController {
     public ResponseEntity<String> addFriend(@RequestBody Friend friend) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body("您尚未登录");
+        else if (friend.getUserId() != StpUtil.getLoginIdAsLong())
+            return ResponseEntity.status(401).body("您无权操作");
         return userService.addFriend(friend) != null ? ResponseEntity.status(200).body("添加成功") : ResponseEntity.status(200).body("该用户不存在");
     }
 
@@ -62,28 +69,38 @@ public class UserController {
     //找已经添加的好友，也需要鉴权 - 需要返回好友的一些信息
     @ApiOperation("查找已经添加的好友")
     @GetMapping("/friend/{friend_id}")
-    public ResponseEntity<Friend> findFriend(@PathVariable("friend_id") Long friendId) {
+    public ResponseEntity<FriendDTO> findFriend(@PathVariable("friend_id") Long friendId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
-        return ResponseEntity.status(200).body(userService.findFriend(friendId, StpUtil.getLoginIdAsLong()));
+        User friend = userService.findUser(friendId);
+        FriendDTO friendDTO = new FriendDTO(friend.getUserId(), friend.getUserName(), friend.getUserEmail(), friend.getUserMotto(), friend.getUserAvatarLink(), friend.getUserLevel(), friend.getUserCreateTime());
+        return ResponseEntity.status(200).body(friendDTO);
     }
 
     // 找用户，也需要鉴权 - 需要返回用户的一些信息
     @ApiOperation("查找用户")
     @GetMapping("/{user_id}")
-    public ResponseEntity<User> findUser(@PathVariable("user_id") Long userId) {
+    public ResponseEntity<UserDTO> findUser(@PathVariable("user_id") Long userId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
-        return ResponseEntity.status(200).body(userService.findUser(userId));
+        User user = userService.findUser(userId);
+        UserDTO userDTO = new UserDTO(user.getUserId(), user.getUserName(), user.getUserEmail(), user.getUserAvatarLink(), user.getUserLevel());
+        return ResponseEntity.status(200).body(userDTO);
     }
 
-    // 找好友列表，也需要鉴权 - 需要返回好友列表，里面每个项目都需要一些信息
+    // 找好友列表，也需要鉴权 - 需要返回好友列表，里面每个项目都需要一些信息，通过测试！！！
     @ApiOperation("查找好友列表")
     @GetMapping("/friend_list/{user_id}")
-    public ResponseEntity<List<Friend>> findFriendList(@PathVariable("user_id") Long userId) {
+    public ResponseEntity<List<FriendDTO>> findFriendList(@PathVariable("user_id") Long userId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
-        return ResponseEntity.status(200).body(userService.findFriendList(userId));
+        List<User> friendListOrigin = userService.findFriendList(userId);
+        List<FriendDTO> friendList = new ArrayList<>();
+        for (User u : friendListOrigin) {
+            FriendDTO friendDTO = new FriendDTO(u.getUserId(), u.getUserName(), u.getUserMotto(), u.getUserAvatarLink());
+            friendList.add(friendDTO);
+        }
+        return ResponseEntity.status(200).body(friendList);
     }
 
     // 修改用户信息，也需要鉴权 - 这就返回个修改成功就行了吧？让用户自己看去
