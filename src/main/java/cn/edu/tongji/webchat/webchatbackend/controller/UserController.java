@@ -20,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO:进程id 26246
 @Api(tags = "用户操作")
 @RestController
 @RequestMapping("/api/v1/user")
@@ -85,7 +86,7 @@ public class UserController {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
         User user = userService.findUser(userId);
-        UserDTO userDTO = new UserDTO(user.getUserId(), user.getUserName(), user.getUserEmail(), user.getUserAvatarLink(), user.getUserLevel());
+        UserDTO userDTO = new UserDTO(user.getUserId(), user.getUserName(), user.getUserEmail(), user.getUserAvatarLink(), user.getUserMotto(), user.getUserLevel(), user.getUserCreateTime());
         return ResponseEntity.status(200).body(userDTO);
     }
 

@@ -4,19 +4,25 @@ package cn.edu.tongji.webchat.webchatbackend.dto;/*
     @Description：
 */
 
+import java.sql.Timestamp;
+
 public class UserDTO {
     private Long userId;
     private String userName;
     private String userEmail;
     private String userAvatarLink;
+    private String userMotto;
     private Long userLevel;
+    private Timestamp userCreateTime;
 
-    public UserDTO(Long userId, String userName, String userEmail, String userAvatarLink, Long userLevel) {
+    public UserDTO(Long userId, String userName, String userEmail, String userAvatarLink, String userMotto, Long userLevel, Timestamp userCreateTime) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userAvatarLink = userAvatarLink;
+        this.userMotto = userMotto;
         this.userLevel = userLevel;
+        this.userCreateTime = userCreateTime;
     }
 
     public Long getUserId() {
@@ -51,12 +57,28 @@ public class UserDTO {
         this.userAvatarLink = userAvatarLink;
     }
 
+    public String getUserMotto() {
+        return userMotto;
+    }
+
+    public void setUserMotto(String userMotto) {
+        this.userMotto = userMotto;
+    }
+
     public Long getUserLevel() {
         return userLevel;
     }
 
     public void setUserLevel(Long userLevel) {
         this.userLevel = userLevel;
+    }
+
+    public Timestamp getUserCreateTime() {
+        return userCreateTime;
+    }
+
+    public void setUserCreateTime(Timestamp userCreateTime) {
+        this.userCreateTime = userCreateTime;
     }
 
     @Override
@@ -66,7 +88,9 @@ public class UserDTO {
                 ", userName='" + userName + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", userAvatarLink='" + userAvatarLink + '\'' +
+                ", userMotto='" + userMotto + '\'' +
                 ", userLevel=" + userLevel +
+                ", userCreateTime=" + userCreateTime +
                 '}';
     }
 }
