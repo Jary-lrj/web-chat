@@ -33,8 +33,12 @@ public class UserService {
     }
 
     public Friend addFriend(Friend friend) { //这也得鉴权
-        if (userRepository.findUserByUserId(friend.getFriendId()) == null)
+        if (userRepository.findUserByUserId(friend.getFriendId()) == null || friend.getUserId() == friend.getFriendId())
             return null;
+        Friend friend2 = new Friend();
+        friend2.setUserId(friend.getFriendId());
+        friend2.setFriendId(friend.getUserId());
+        friendRepository.save(friend2);
         return friendRepository.save(friend);
     }
 
