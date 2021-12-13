@@ -1,10 +1,7 @@
 package cn.edu.tongji.webchat.webchatbackend.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.edu.tongji.webchat.webchatbackend.dto.FriendDTO;
-import cn.edu.tongji.webchat.webchatbackend.dto.FriendListDTO;
-import cn.edu.tongji.webchat.webchatbackend.dto.RegisterDTO;
-import cn.edu.tongji.webchat.webchatbackend.dto.UserDTO;
+import cn.edu.tongji.webchat.webchatbackend.dto.*;
 import cn.edu.tongji.webchat.webchatbackend.model.Friend;
 import cn.edu.tongji.webchat.webchatbackend.model.User;
 import cn.edu.tongji.webchat.webchatbackend.service.UserService;
@@ -32,11 +29,14 @@ public class UserController {
     // 登录，这应该不太需要，往里面存个token就行了
     @ApiOperation("用户登录")
     @GetMapping("/login")
-    public ResponseEntity<String> userLogin(@RequestParam("user_id") Long userId, @RequestParam("user_pwd") String userPassword) {
-        if (userService.login(userId, userPassword) == null)
-            return ResponseEntity.status(200).body("登录失败");
-        else
-            return ResponseEntity.status(200).body(StpUtil.getTokenValue());
+    public ResponseEntity<LoginDTO> userLogin(@RequestParam("user_id") Long userId, @RequestParam("user_pwd") String userPassword) {
+        if (userService.login(userId, userPassword) == null) {
+            LoginDTO data = new LoginDTO("登录失败", "登录失败");
+            return ResponseEntity.status(200).body(data);
+        } else {
+            LoginDTO data = new LoginDTO(StpUtil.getTokenValue(), userService.findUser(userId).getUserName());
+            return ResponseEntity.status(200).body(data);
+        }
     }
 
     // 注册 - 返回注册的用户名、密码、账号
