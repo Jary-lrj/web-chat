@@ -29,6 +29,7 @@ public class UserController {
     // 登录，这应该不太需要，往里面存个token就行了
     @ApiOperation("用户登录")
     @GetMapping("/login")
+    @CrossOrigin
     public ResponseEntity<LoginDTO> userLogin(@RequestParam("user_id") Long userId, @RequestParam("user_pwd") String userPassword) {
         if (userService.login(userId, userPassword) == null) {
             LoginDTO data = new LoginDTO("登录失败", "登录失败");
@@ -42,6 +43,7 @@ public class UserController {
     // 注册 - 返回注册的用户名、密码、账号
     @ApiOperation("用户注册")
     @PostMapping("/register")
+    @CrossOrigin
     public ResponseEntity<RegisterDTO> userRegister(@RequestBody User user) {
         userService.register(user);
         RegisterDTO userAccount = new RegisterDTO(user.getUserId(), user.getUserName(), user.getUserPassword());
@@ -51,6 +53,7 @@ public class UserController {
     // 添加好友，需要鉴权
     @ApiOperation("添加好友")
     @PostMapping("/friend")
+    @CrossOrigin
     public ResponseEntity<String> addFriend(@RequestBody Friend friend) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body("您尚未登录");
@@ -62,6 +65,7 @@ public class UserController {
     // 删除好友，也需要鉴权
     @ApiOperation("删除好友")
     @DeleteMapping("/friend/{friend_id}")
+    @CrossOrigin
     public ResponseEntity<String> deleteFriend(@PathVariable("friend_id") Long friendId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body("您尚未登录");
@@ -71,6 +75,7 @@ public class UserController {
     //找已经添加的好友，也需要鉴权 - 需要返回好友的一些信息
     @ApiOperation("查找已经添加的好友")
     @GetMapping("/friend/{friend_id}")
+    @CrossOrigin
     public ResponseEntity<FriendDTO> findFriend(@PathVariable("friend_id") Long friendId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
@@ -82,6 +87,7 @@ public class UserController {
     // 找用户，也需要鉴权 - 需要返回用户的一些信息
     @ApiOperation("查找用户")
     @GetMapping("/{user_id}")
+    @CrossOrigin
     public ResponseEntity<UserDTO> findUser(@PathVariable("user_id") Long userId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
@@ -93,6 +99,7 @@ public class UserController {
     // 找好友列表，也需要鉴权 - 需要返回好友列表，里面每个项目都需要一些信息，通过测试！！！
     @ApiOperation("查找好友列表")
     @GetMapping("/friend_list/{user_id}")
+    @CrossOrigin
     public ResponseEntity<List<FriendListDTO>> findFriendList(@PathVariable("user_id") Long userId) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body(null);
@@ -109,6 +116,7 @@ public class UserController {
     // TODO:这jb为什么非要修改主码，你妈的
     @ApiOperation("修改用户信息")
     @PutMapping("/{user_id}")
+    @CrossOrigin
     public ResponseEntity<String> updateUserInfo(@PathVariable("user_id") Long userId, @RequestBody User update) {
         if (!StpUtil.isLogin())
             return ResponseEntity.status(401).body("您尚未登录");
