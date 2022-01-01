@@ -9,7 +9,6 @@ import cn.edu.tongji.webchat.webchatbackend.util.JpaUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -74,15 +73,14 @@ public class UserService {
     }
 
     // 修改用户信息
-    public User updateUserInfo(Long userId, User after) {
+    public void updateUserInfo(Long userId, User after) {
         if (userRepository.findUserByUserId(userId) == null)
-            return null;
+            return;
         User before = userRepository.findUserByUserId(userId);
         if (after != null) {
             JpaUtil.copyNotNullProperties(after, before);
-            return userRepository.save(before);
+            userRepository.save(before);
         }
-        return null;
     }
 
 }
